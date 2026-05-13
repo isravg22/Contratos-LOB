@@ -13,6 +13,7 @@ import {
   TableCell,
   TableLayoutType,
   TableRow,
+  TabStopType,
   TextRun,
   UnderlineType,
   WidthType,
@@ -296,14 +297,11 @@ function signatureTable(table: Extract<Block, { type: "table" }>) {
 function footerLine(companyName: string) {
   return new Paragraph({
     spacing: { before: 0, after: 0 },
+    tabStops: [{ type: TabStopType.RIGHT, position: contentWidth }],
     children: [
       new TextRun({ text: "LA OLA BUENA", font, size: footerSize, color: "000000" }),
-      new TextRun({
-        text: companyName ? companyName.padStart(120, " ") : "",
-        font,
-        size: footerSize,
-        color: "000000",
-      }),
+      new TextRun({ text: "\t", font, size: footerSize }),
+      new TextRun({ text: companyName || "", font, size: footerSize, color: "000000" }),
     ],
   });
 }
