@@ -1,0 +1,593 @@
+/**
+ * GENERADOR DE CONTRATO — LA OLA BUENA
+ * =====================================
+ * Uso: node generar_contrato.js
+ *
+ * Antes de ejecutar, asegúrate de que el logo esté en la ruta indicada
+ * en LOGO_PATH. Por defecto usa LOB_Brand.jpg del proyecto.
+ *
+ * El contrato se guarda en OUTPUT_PATH.
+ */
+
+const {
+  Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
+  ImageRun, Header, Footer, AlignmentType, BorderStyle, WidthType,
+  ShadingType, LevelFormat, TabStopType, TabStopPosition,
+} = require('docx');
+const fs = require('fs');
+const { execSync } = require('child_process');
+
+// ─── CONFIGURACIÓN ────────────────────────────────────────────────────────────
+const LOGO_PATH   = '/mnt/project/LOB_Brand.jpg';   // Ruta al logo
+const OUTPUT_PATH = '/mnt/user-data/outputs/CONTRATO_LOB_plantilla.docx';
+const UNPACKED    = '/tmp/contrato_unpacked';
+// ──────────────────────────────────────────────────────────────────────────────
+
+const logoData = fs.readFileSync('/home/claude/LOB_Brand_clean.png');
+
+const font      = 'Manrope';
+const bodySize = 20; // 10pt en half-points
+const h1Size   = 24; // 12pt
+const h2Size    = 20; // 10pt
+const h2BigSize = 24; // 12pt — para REUNIDOS y EXPONEN
+
+// ─── HELPERS DE PÁRRAFOS ──────────────────────────────────────────────────────
+
+function body(text, opts = {}) {
+  return new Paragraph({
+    spacing: { after: 160, before: 0 },
+    alignment: opts.center
+      ? AlignmentType.CENTER
+      : opts.justify !== false ? AlignmentType.JUSTIFIED : AlignmentType.LEFT,
+    children: [new TextRun({ text, font, size: bodySize, bold: opts.bold || false, italics: opts.italic || false })],
+  });
+}
+
+function bodyRuns(runs, opts = {}) {
+  return new Paragraph({
+    spacing: { after: 160, before: 0 },
+    alignment: opts.center
+      ? AlignmentType.CENTER
+      : opts.justify !== false ? AlignmentType.JUSTIFIED : AlignmentType.LEFT,
+    children: runs.map(r => new TextRun({ font, size: bodySize, ...r })),
+  });
+}
+
+function h1(text) {
+  return new Paragraph({
+    spacing: { before: 0, after: 120 },
+    alignment: AlignmentType.LEFT,
+    children: [new TextRun({ text, font, size: h1Size, bold: true })],
+  });
+}
+
+function h2(text) {
+  return new Paragraph({
+    spacing: { before: 640, after: 100 },
+    children: [new TextRun({ text, font, size: h2Size, bold: true })],
+  });
+}
+
+function h2Grande(text) {
+  return new Paragraph({
+    spacing: { before: 640, after: 100 },
+    children: [new TextRun({ text, font, size: h2BigSize, bold: true })],
+  });
+}
+
+function spacer() {
+  return new Paragraph({ spacing: { after: 80 }, children: [new TextRun({ text: '', font, size: bodySize })] });
+}
+
+function doubleSpacer() {
+  return [spacer(), spacer()];
+}
+
+function tripleSpacer() {
+  return [spacer(), spacer(), spacer()];
+}
+
+function bullet(text, opts = {}) {
+  return new Paragraph({
+    spacing: { after: 120 },
+    numbering: { reference: 'bullets', level: opts.level || 0 },
+    children: [new TextRun({ text, font, size: bodySize })],
+  });
+}
+
+function bulletCuarta(text) {
+  return new Paragraph({
+    spacing: { after: 120 },
+    numbering: { reference: 'bullets-cuarta', level: 0 },
+    children: [new TextRun({ text, font, size: bodySize })],
+  });
+}
+
+function numbered(text) {
+  return new Paragraph({
+    spacing: { after: 120 },
+    numbering: { reference: 'numbers', level: 0 },
+    children: [new TextRun({ text, font, size: bodySize })],
+  });
+}
+
+// Sub-título de sección dentro de una cláusula (ej: "Desarrollo web. Incluye:")
+function subh(text) {
+  return new Paragraph({
+    spacing: { before: 240, after: 80 },
+    indent: { left: 720 },
+    children: [new TextRun({ text, font, size: bodySize, bold: true })],
+  });
+}
+
+// ─── BORDES ───────────────────────────────────────────────────────────────────
+
+const noBorder  = { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' };
+const noBorders = { top: noBorder, bottom: noBorder, left: noBorder, right: noBorder };
+
+// ─── DOCUMENTO ────────────────────────────────────────────────────────────────
+
+const doc = new Document({
+  numbering: {
+    config: [
+      {
+        reference: 'bullets',
+        levels: [
+          { level: 0, format: LevelFormat.BULLET, text: '-', alignment: AlignmentType.LEFT,
+            style: { paragraph: { indent: { left: 720, hanging: 360 } } } },
+          { level: 1, format: LevelFormat.BULLET, text: '•', alignment: AlignmentType.LEFT,
+            style: { paragraph: { indent: { left: 1080, hanging: 360 } } } },
+        ],
+      },
+      {
+        reference: 'bullets-cuarta',
+        levels: [
+          { level: 0, format: LevelFormat.BULLET, text: '-', alignment: AlignmentType.LEFT,
+            style: { paragraph: { indent: { left: 1200, hanging: 360 } } } },
+        ],
+      },
+      {
+        reference: 'numbers',
+        levels: [
+          { level: 0, format: LevelFormat.DECIMAL, text: '%1.', alignment: AlignmentType.LEFT,
+            style: { paragraph: { indent: { left: 720, hanging: 360 } } } },
+        ],
+      },
+    ],
+  },
+  sections: [{
+    properties: {
+      page: {
+        size: { width: 11906, height: 16838 },
+        margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 },
+      },
+    },
+
+    // ── ENCABEZADO ──
+    headers: {
+      default: new Header({
+        children: [
+          new Paragraph({
+            alignment: AlignmentType.RIGHT,
+            spacing: { after: 60 },
+            children: [
+              new ImageRun({
+                type: 'png',
+                data: logoData,
+                transformation: { width: 126, height: 21 }, // ratio 6:1, pequeño y nítido
+                altText: { title: 'La Ola Buena', description: 'Logo La Ola Buena', name: 'logo' },
+              }),
+            ],
+          }),
+          spacer(), spacer(), spacer(),
+        ],
+      }),
+    },
+
+    // ── PIE DE PÁGINA (se sobreescribe con XML directo al final) ──
+    footers: {
+      default: new Footer({
+        children: [
+          new Paragraph({
+            spacing: { before: 0, after: 0 },
+            tabStops: [{ type: TabStopType.RIGHT, position: TabStopPosition.MAX }],
+            children: [
+              new TextRun({ text: 'LA OLA BUENA', font, size: 16 }),
+              new TextRun({ text: '\t', font, size: 16 }),
+              new TextRun({ text: '[NOMBRE DE LA EMPRESA]', font, size: 16 }),
+            ],
+          }),
+        ],
+      }),
+    },
+
+    children: [
+
+      // ── TÍTULO ──
+      h1('CONTRATO PROFESIONAL — [NOMBRE DE LA EMPRESA]'),
+      bodyRuns([
+        { text: 'En Cádiz, a ' },
+        { text: '[FECHA DE FIRMA]', bold: true },
+      ]),
+
+      // ── REUNIDOS ──
+      h2Grande('REUNIDOS'),
+      bodyRuns([
+        { text: 'De una parte, ' },
+        { text: '[NOMBRE REPRESENTANTE LEGAL DE [NOMBRE DE LA EMPRESA]]', bold: true },
+        { text: ' con NIF ' },
+        { text: '[NIF/CIF [NOMBRE DE LA EMPRESA]]', bold: true },
+        { text: ', y domicilio a efectos de notificaciones en ' },
+        { text: '[DOMICILIO FISCAL [NOMBRE DE LA EMPRESA]]', bold: true },
+        { text: ' (en adelante [NOMBRE DE LA EMPRESA]).' },
+      ]),
+      bodyRuns([
+        { text: 'De otra parte Francisco Manuel Martín Sánchez, con domicilio a efectos de notificaciones sito en av/Duque de Nájera N 7, Bloque D 4D Cádiz 11002, con C.I.F. ' },
+        { text: '75776254V', bold: true },
+        { text: ', en adelante LA OLA BUENA.' },
+      ]),
+      body('Ambas partes se reconocen legitimación y capacidad necesarias para el otorgamiento del presente acuerdo en el cual,'),
+
+      // ── EXPONEN ──
+      new Paragraph({
+        spacing: { before: 960, after: 100 },
+        children: [new TextRun({ text: 'EXPONEN', font, size: h2BigSize, bold: true })],
+      }),
+      body('Que ambas partes con la finalidad del desarrollo de elementos digitales para [NOMBRE DE LA EMPRESA] acuerdan el siguiente CONTRATO DE OBRA Y SERVICIO sometido a las siguientes estipulaciones:'),
+
+      // ── PRIMERA ──
+      h2('PRIMERA.- OBJETO'),
+      body('El objeto del presente contrato es regular un acuerdo de colaboración entre las empresas [NOMBRE DE LA EMPRESA] y LA OLA BUENA, el cual consistirá en:'),
+      body('Definir las condiciones y características del desarrollo web, creación de contenidos y estrategia SEO para [NOMBRE DE LA EMPRESA], ofrecidos por parte de LA OLA BUENA, así como los elementos digitales y el mantenimiento necesarios para el proyecto.'),
+
+      // ── SEGUNDA ──
+      h2('SEGUNDA.- OBLIGACIONES DE LAS PARTES'),
+      numbered('Ambas partes se comprometen a aportar todos sus conocimientos y experiencia al llevar a cabo las funciones descritas en el objeto del presente contrato con la máxima diligencia posible.'),
+      numbered('Ambas partes se comprometen a que exista una relación cordial de trabajo.'),
+      numbered('Ambas partes se autorizan recíprocamente al uso de su nombre comercial, marca y logotipo, así como a la mención pública de la colaboración existente, exclusivamente con fines de difusión en portfolio, página web, redes sociales y materiales comerciales propios. El primer uso por cada parte requerirá la aprobación previa de la otra, entendiéndose tácitamente aprobado tras 7 días naturales sin objeción. Cualquier parte podrá revocar la autorización por escrito en cualquier momento; en tal caso, la otra retirará las referencias públicas en un plazo razonable.'),
+      numbered('LA OLA BUENA en calidad de equipo técnico se encargará de crear y mantener la plataforma tecnológica necesaria para obtener los objetivos marcados.'),
+      numbered('[NOMBRE DE LA EMPRESA] proporcionará los contenidos y conocimientos necesarios para su realización en el menor tiempo que sea posible.'),
+
+      // ── TERCERA ──
+      h2('TERCERA.- ACUERDO ECONÓMICO'),
+      body('Se establece el método de pago por parte de [NOMBRE DE LA EMPRESA] a LA OLA BUENA:'),
+      bodyRuns([
+        { text: 'El valor de los servicios contratados asciende a la cantidad de ' },
+        { text: '[VALOR DE SERVICIOS]€ + IVA mensual', bold: true },
+        { text: '.' },
+      ]),
+      bodyRuns([
+        { text: 'Se acuerda entonces ' },
+        { text: 'una oferta', bold: true },
+        { text: ' consistente en un pago mensual de ' },
+        { text: '[VALOR OFERTA]€ + IVA', bold: true },
+        { text: ' al inicio del mes en curso en concepto de mantenimiento del plan.' },
+      ]),
+      bodyRuns([
+        { text: 'La oferta económica indicada tendrá vigencia durante los primeros ' },
+        { text: '[DURACIÓN OFERTA] meses', bold: true },
+        { text: ' de contrato. A la finalización de dicho periodo, ambas partes acordarán de mutuo acuerdo las condiciones económicas aplicables a periodos sucesivos.' },
+      ]),
+      body('Los pagos correspondientes a dominio, alojamiento anual y contratación de Elementor Pro. Esto es 15€ + IVA/año, 140€ + IVA/año y 50€ + IVA/año respectivamente. Estos cargos se realizan anualmente y no se consideran beneficios de LA OLA BUENA.'),
+
+      // ── CUARTA ──
+      h2('CUARTA.- CARACTERÍSTICAS DEL PRODUCTO A DESARROLLAR'),
+      body('Todos los servicios y prestaciones descritos en esta cláusula, incluidos los trabajos de desarrollo web, se prestan en régimen de obra subrogada e integrada en la cuota mensual acordada en la cláusula TERCERA, sin que su ejecución suponga prestación adicional o coste separado para [NOMBRE DE LA EMPRESA], salvo los gastos anuales recogidos en la cláusula NOVENA.'),
+      subh('Desarrollo web. Incluye:'),
+      bulletCuarta('Diseño y maquetación de la web corporativa adaptada a la identidad de marca de [NOMBRE DE LA EMPRESA].'),
+      bulletCuarta('Estructura de páginas, navegación y arquitectura de la información.'),
+      bulletCuarta('Versión responsive optimizada para móvil, tablet y escritorio.'),
+      bulletCuarta('Integración de formularios de contacto, llamadas a la acción y enlaces directos a canales de comunicación (WhatsApp, email, teléfono).'),
+      bulletCuarta('Configuración de hosting, dominio y certificado SSL.'),
+      bulletCuarta('Instalación y configuración base de WordPress y plantilla profesional con Elementor Pro.'),
+      bulletCuarta('Pruebas de funcionamiento, compatibilidad y velocidad antes de la publicación.'),
+      subh('Creación de contenidos. Incluye:'),
+      bulletCuarta('Redacción de textos para las páginas principales orientados a marca y conversión.'),
+      bulletCuarta('Estructuración de contenidos en bloques claros y orientados al usuario objetivo.'),
+      bulletCuarta('Selección y tratamiento de imágenes (optimización de peso, formato y atributos ALT).'),
+      bulletCuarta('Creación de descripciones específicas para servicios y secciones clave de la web.'),
+      bulletCuarta('Apoyo en la línea editorial y tono de comunicación.'),
+      subh('SEO on page. Incluye:'),
+      bulletCuarta('Perfil de empresa en Google y en Bing.'),
+      bulletCuarta('Configuración de Google Analytics e inclusión del código en la web.'),
+      bulletCuarta('Configuración y monitorización de Google Search Console.'),
+      bulletCuarta('Instalación y configuración del plugin Yoast SEO para WordPress.'),
+      bulletCuarta('Alta y configuración en SE Ranking (herramienta especializada para SEO).'),
+      bulletCuarta('Optimización SEO para asistentes de IA.'),
+      bulletCuarta('Redacción de títulos y meta descripciones orientadas a SEO.'),
+      bulletCuarta('Revisión de indexación de páginas y optimización de slugs.'),
+      bulletCuarta('Creación de textos alternativos (atributos ALT) en imágenes y medios.'),
+      bulletCuarta('Optimización de velocidad y Core Web Vitals.'),
+      subh('Estrategia SEO mensual. Incluye:'),
+      bulletCuarta('Análisis de la competencia y de tendencias del sector.'),
+      bulletCuarta('Elección y tratamiento de palabras clave principales.'),
+      bulletCuarta('Estrategia de contenidos (plan básico de blog y landings).'),
+      bulletCuarta('SEO Local: optimización de mapas, citaciones en directorios y SEO geolocalizado.'),
+      bulletCuarta('Analítica de conversiones en la web (seguimiento de botones y enlaces de contacto como formularios, WhatsApp, llamadas y email).'),
+      bulletCuarta('Linkbuilding inicial: revisión y generación de enlaces en directorios de calidad.'),
+      bulletCuarta('Revisión mensual de estrategia SEO e implementación de conclusiones.'),
+      bulletCuarta('Informes trimestrales de rendimiento y evolución SEO.'),
+      subh('Gestión de reseñas. Incluye:'),
+      bulletCuarta('Configuración y optimización del perfil público en Google y Bing para captación de reseñas.'),
+      bulletCuarta('Monitorización de nuevas reseñas y notificaciones a [NOMBRE DE LA EMPRESA].'),
+      bulletCuarta('Propuesta de plantillas de respuesta a reseñas positivas y negativas.'),
+      bulletCuarta('Asesoramiento en la implementación de procesos para solicitar reseñas a clientes reales.'),
+      bulletCuarta('Inclusión de reseñas o testimonios destacados en la web cuando proceda.'),
+      subh('Mantenimiento y securización. Incluye:'),
+      bulletCuarta('Copias de seguridad de archivos automatizadas cada 15 días y almacenamiento en la nube durante dos meses mediante plugin profesional.'),
+      bulletCuarta('Copias de seguridad de base de datos cada 15 días y almacenamiento en la nube durante dos meses mediante plugin profesional.'),
+      bulletCuarta('Copia de seguridad diaria de archivos y bases de datos de los últimos 7 días.'),
+      bulletCuarta('Monitorización de seguridad web.'),
+      bulletCuarta('Revisión mensual de archivos críticos y base de datos.'),
+      bulletCuarta('Actualización mensual de plugins.'),
+      bulletCuarta('Actualización mensual de WordPress.'),
+      bulletCuarta('Limpieza y optimización periódica de base de datos.'),
+      bulletCuarta('Reducción y optimización de los plugins utilizados siempre que sea posible.'),
+      bulletCuarta('Asesoramiento en la selección de plugins nuevos e instalados.'),
+      bulletCuarta('Optimización de imágenes para mejora de la carga inicial.'),
+      bulletCuarta('Monitorización del rendimiento web y tests de rendimientos mensuales.'),
+      bulletCuarta('Subida y modificación de contenido web.'),
+      bulletCuarta('Comunicación directa prioritaria mediante WhatsApp y correo electrónico.'),
+      bulletCuarta('Soporte web y resolución de incidencias.'),
+      bulletCuarta('Informe mensual de las acciones realizadas, resultado de test de rendimiento y mejoras aplicadas.'),
+
+      // ── QUINTA ──
+      h2('QUINTA.- TIEMPOS DE DESARROLLO'),
+      bodyRuns([
+        { text: 'El tiempo estimado para el desarrollo es de ' },
+        { text: '[TIEMPO DE DESARROLLO]', bold: true },
+        { text: '. La estrategia se implantará en el primer mes y se irán haciendo revisiones y ajustes en los meses siguientes hasta llegar a los objetivos.' },
+      ]),
+
+      // ── SEXTA ──
+      h2('SEXTA.- PROHIBICIÓN DE CESIÓN A TERCEROS'),
+      body('Las partes contratantes en ningún caso podrán ceder su posición contractual a terceros sin el consentimiento expreso de la otra parte contratante.'),
+
+      // ── SÉPTIMA ──
+      h2('SÉPTIMA.- CONFIDENCIALIDAD'),
+      body('Ambas partes han de guardar secreto de toda la información a la que puedan llegar a tener acceso de la otra parte durante el presente contrato y con posterioridad al mismo.'),
+
+      // ── OCTAVA ──
+      h2('OCTAVA.- PROPIEDAD INTELECTUAL E INDUSTRIAL'),
+      body('En ningún caso las cláusulas del presente convenio suponen la cesión o transmisión de cualesquiera derechos de propiedad intelectual o industrial titularidad de los Colaboradores.'),
+      body('De esta forma:'),
+      bullet('El contenido intelectual de [NOMBRE DE LA EMPRESA] será de su exclusiva propiedad.'),
+      bullet('La metodología y tecnologías desarrolladas para el presente proyecto pertenecen a LA OLA BUENA. Se excluye todo aquello que ya disponga de licencia específica y debamos ajustarnos a sus términos.'),
+
+      // ── NOVENA ──
+      h2('NOVENA.- GASTOS'),
+      body('Cualquier gasto derivado del ejercicio de cualquier actividad destinada a la colaboración objeto del presente contrato, será asumido por [NOMBRE DE LA EMPRESA] en calidad de aportación al proyecto. La estimación inicial de gastos es (pendiente de modificación si fuese necesario):'),
+      new Table({
+        width: { size: 9026, type: WidthType.DXA },
+        columnWidths: [4513, 4513],
+        rows: [
+          new TableRow({
+            children: [
+              new TableCell({
+                width: { size: 4513, type: WidthType.DXA },
+                shading: { fill: 'CCCCCC', type: ShadingType.CLEAR },
+                margins: { top: 80, bottom: 80, left: 120, right: 120 },
+                children: [new Paragraph({ children: [new TextRun({ text: 'Concepto', font, size: bodySize, bold: true })] })],
+              }),
+              new TableCell({
+                width: { size: 4513, type: WidthType.DXA },
+                shading: { fill: 'CCCCCC', type: ShadingType.CLEAR },
+                margins: { top: 80, bottom: 80, left: 120, right: 120 },
+                children: [new Paragraph({ children: [new TextRun({ text: 'Pago anual', font, size: bodySize, bold: true })] })],
+              }),
+            ],
+          }),
+          ...[ ['Elementor Pro', '50€ + IVA'], ['Alojamiento', '140€ + IVA'], ['Dominio', '15€ + IVA'] ]
+            .map(([concepto, pago]) => new TableRow({
+              children: [
+                new TableCell({
+                  width: { size: 4513, type: WidthType.DXA },
+                  margins: { top: 80, bottom: 80, left: 120, right: 120 },
+                  children: [new Paragraph({ children: [new TextRun({ text: concepto, font, size: bodySize })] })],
+                }),
+                new TableCell({
+                  width: { size: 4513, type: WidthType.DXA },
+                  margins: { top: 80, bottom: 80, left: 120, right: 120 },
+                  children: [new Paragraph({ children: [new TextRun({ text: pago, font, size: bodySize, bold: true })] })],
+                }),
+              ],
+            })),
+        ],
+      }),
+
+      // ── DÉCIMA ──
+      h2('DÉCIMA.- LICENCIAS Y SERVICIOS DE TERCEROS'),
+      body('Las licencias, suscripciones y servicios de terceros necesarios para la prestación de los servicios objeto del presente contrato (dominio, alojamiento web, Elementor Pro, herramientas SEO y demás plugins o servicios de pago) serán contratados por LA OLA BUENA en nombre y por cuenta de [NOMBRE DE LA EMPRESA], quien asume directamente su coste anual conforme a la cláusula NOVENA.'),
+      bodyRuns([
+        { text: 'Aunque la gestión técnica y administrativa la realice LA OLA BUENA durante la vigencia del contrato, ' },
+        { text: 'la titularidad última de dichas licencias y servicios corresponde a [NOMBRE DE LA EMPRESA]', bold: true },
+        { text: '. En caso de resolución o no renovación del contrato, LA OLA BUENA llevará a cabo las gestiones necesarias para transferir formalmente la titularidad y los accesos a [NOMBRE DE LA EMPRESA] o al proveedor que ésta designe, siempre que los pagos correspondientes a dichos servicios y a las mensualidades del contrato se encuentren al corriente.' },
+      ]),
+      body('La transferencia se realizará en un plazo máximo de 15 días naturales desde la solicitud expresa de [NOMBRE DE LA EMPRESA].'),
+      body('LA OLA BUENA no será responsable de los términos, modificaciones unilaterales, interrupciones o subidas de precio que apliquen los proveedores de terceros sobre dichas licencias o servicios.'),
+
+      // ── UNDÉCIMA ──
+      h2('UNDÉCIMA.- DURACIÓN DEL CONTRATO'),
+      bodyRuns([
+        { text: 'El presente contrato tendrá una duración mínima de ' },
+        { text: '[DURACIÓN DEL CONTRATO]', bold: true },
+        { text: '. Una vez cumplido dicho periodo mínimo, el contrato se renovará automáticamente por periodos sucesivos de 12 meses, salvo que cualquiera de las partes comunique a la otra, por escrito, su voluntad de no renovar con una antelación mínima de 30 días naturales a la finalización del periodo en curso.' },
+      ]),
+
+      // ── DUODÉCIMA ──
+      h2('DUODÉCIMA.- NOTIFICACIONES'),
+      body('A efectos de notificaciones, o de emplazamientos judiciales, y en general, toda comunicación o requerimiento que hayan de oír las partes en relación con el presente contrato, se tomará como domicilios los indicados en el inicio del presente documento.'),
+      body('Cualquier cambio de domicilio de una de las partes deberá ser notificado a la otra de forma inmediata, y por un medio que garantice la recepción del mensaje.'),
+
+      // ── DECIMOTERCERA ──
+      h2('DECIMOTERCERA.- RESOLUCIÓN'),
+      body('El presente contrato puede quedar resuelto por las causas en él contenidas y además por siguientes causas:'),
+      numbered('Incumplimiento de las obligaciones en él contenidas por cualquiera de las partes sin perjuicio de la posible indemnización por los daños y perjuicios que del incumplimiento pudieran ocasionarse que comprenderá tanto el daño emergente como el lucro cesante.'),
+      numbered('Por acuerdo expreso entre las partes.'),
+      body('Será posible resolver el contrato antes del periodo mínimo establecido, en cuyo caso [NOMBRE DE LA EMPRESA] tendrá que efectuar un pago único, de importe igual al 70% de la suma de las mensualidades pendientes de pago hasta la finalización del periodo mínimo del contrato, calculadas según la cuota mensual aplicada en el momento de la resolución, y que deberá hacerse efectivo antes de 30 días naturales después de haber solicitado la resolución del contrato.'),
+
+      // ── DECIMOCUARTA ──
+      h2('DECIMOCUARTA.- PROCEDIMIENTO DE SALIDA Y TRANSICIÓN'),
+      body('A la finalización del contrato, por cualquier causa, LA OLA BUENA llevará a cabo un procedimiento de transición ordenada que incluirá:'),
+      bullet('Entrega a [NOMBRE DE LA EMPRESA] de las credenciales de acceso a la web, panel de administración de WordPress, alojamiento, dominio, cuenta de Elementor Pro y demás herramientas asociadas (Google Analytics, Google Search Console, perfiles de empresa de Google y Bing, SE Ranking y cualquier otra plataforma utilizada durante la prestación del servicio).'),
+      bullet('Generación y entrega de una copia de seguridad completa y actualizada de archivos y base de datos en formato estándar exportable.'),
+      bullet('Entrega de un informe final que documente las acciones SEO realizadas, palabras clave trabajadas, estructura de contenidos publicados e histórico de informes mensuales.'),
+      bullet('Apoyo razonable en la migración a un nuevo proveedor durante los 15 días naturales posteriores a la finalización del contrato, sin coste adicional. Cualquier soporte que se extienda más allá de dicho plazo o que implique trabajo técnico significativo (migración de servidor, rediseño, reescritura de contenidos, etc.) será presupuestado de forma independiente.'),
+      body('[NOMBRE DE LA EMPRESA] se compromete a tener al corriente todos los pagos pendientes (mensualidades, gastos anuales y, en su caso, la penalización prevista en la cláusula DECIMOTERCERA) antes de la entrega definitiva de credenciales, copias y documentación. En caso de impago, LA OLA BUENA podrá retener las entregas hasta la regularización.'),
+      body('Las obligaciones de confidencialidad recogidas en la cláusula SÉPTIMA y de propiedad intelectual recogidas en la cláusula OCTAVA permanecerán vigentes tras la finalización del contrato.'),
+
+      // ── DECIMOQUINTA ──
+      h2('DECIMOQUINTA.- LIMITACIÓN DE RESPONSABILIDAD'),
+      bodyRuns([
+        { text: 'La responsabilidad total de LA OLA BUENA frente a [NOMBRE DE LA EMPRESA] por cualquier daño o perjuicio derivado del cumplimiento o incumplimiento del presente contrato quedará limitada, de forma acumulada por cualquier reclamación o conjunto de reclamaciones, a un importe máximo equivalente a ' },
+        { text: 'tres (3) mensualidades', bold: true },
+        { text: ' efectivamente abonadas por [NOMBRE DE LA EMPRESA], calculadas según la cuota mensual vigente en el momento del hecho que origine la responsabilidad.' },
+      ]),
+      body('En ningún caso LA OLA BUENA responderá por:'),
+      bullet('Daños indirectos, consecuenciales, lucro cesante, pérdida de beneficios, pérdida de oportunidad comercial o pérdida de reputación.'),
+      bullet('Pérdidas de datos cuando se haya cumplido con la política de copias de seguridad descrita en la cláusula CUARTA.'),
+      bullet('Caídas, fallos, cambios de algoritmo, pérdidas de posicionamiento orgánico, sanciones, suspensiones de cuenta o cualquier otra incidencia provocada por proveedores de terceros (Google, Bing, alojamiento, plugins, Elementor, herramientas SEO, etc.) o por decisiones, instrucciones o actuaciones de la propia [NOMBRE DE LA EMPRESA].'),
+      bullet('Pérdidas derivadas de retrasos, errores u omisiones imputables a la falta de entrega de contenidos, accesos, materiales o información requeridos a [NOMBRE DE LA EMPRESA].'),
+      bullet('Daños derivados de un uso indebido de la plataforma por personas ajenas a LA OLA BUENA o por intervenciones técnicas realizadas en la web sin su conocimiento o autorización.'),
+      body('La presente limitación no será de aplicación en los supuestos en que la legislación aplicable imperativamente impida su exclusión, en particular en casos de dolo o culpa grave de LA OLA BUENA.'),
+
+      // ── DECIMOSEXTA ──
+      h2('DECIMOSEXTA.- LEGISLACIÓN APLICABLE Y FUERO'),
+      body('El presente contrato se rige por lo dispuesto en él y de forma supletoria se aplicarán las normas generales de las obligaciones y contratos recogidas en Código Civil y otras leyes que fueren aplicables.'),
+      body('Las partes se someten a la jurisdicción de los tribunales competentes territorialmente de Cádiz, para la resolución de cualquier conflicto que pueda surgir entre ellas, con renuncia expresa a cualquier otro tribunal o fuero que pudiera corresponderles.'),
+
+      // ── DECIMOSÉPTIMA ──
+      h2('DECIMOSÉPTIMA.- GENERALIDADES'),
+      body('El presente contrato anula y reemplaza cualquier contrato o acuerdo anterior entre las partes con el mismo objeto y sólo podrá ser modificado por un nuevo acuerdo firmado por ambas partes.'),
+      body('Si alguna de las cláusulas del presente contrato fuere declarada nula o inaplicable, dicha cláusula se considerará excluida del contrato, sin que implique la nulidad del mismo. En este caso las partes harán cuanto esté a su alcance para encontrar una solución equivalente que sea válida y que refleje debidamente sus intenciones.'),
+      body('Los encabezamientos de las distintas cláusulas lo son sólo a efectos informativos, y no afectarán, calificarán o ampliarán la interpretación de este Contrato.'),
+      body('Y de conformidad con lo expuesto en el presente contrato, ambas partes firman el presente contrato de colaboración extendido por duplicado, en fecha y lugar indicados al inicio del mismo.'),
+      spacer(), spacer(), spacer(),
+
+      // ── FIRMAS ──
+      new Table({
+        width: { size: 9026, type: WidthType.DXA },
+        columnWidths: [4513, 4513],
+        borders: { top: noBorder, bottom: noBorder, left: noBorder, right: noBorder, insideHorizontal: noBorder, insideVertical: noBorder },
+        rows: [
+          new TableRow({
+            children: [
+              new TableCell({
+                width: { size: 4513, type: WidthType.DXA }, margins: { top: 80, bottom: 80, left: 120, right: 120 }, borders: noBorders,
+                children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'Por [NOMBRE DE LA EMPRESA]', font, size: bodySize, bold: true })] })],
+              }),
+              new TableCell({
+                width: { size: 4513, type: WidthType.DXA }, margins: { top: 80, bottom: 80, left: 120, right: 120 }, borders: noBorders,
+                children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'Por LA OLA BUENA', font, size: bodySize, bold: true })] })],
+              }),
+            ],
+          }),
+          new TableRow({
+            children: [
+              new TableCell({
+                width: { size: 4513, type: WidthType.DXA }, margins: { top: 1200, bottom: 80, left: 120, right: 120 }, borders: noBorders,
+                children: [
+                  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 80 }, children: [new TextRun({ text: '[NOMBRE REPRESENTANTE LEGAL]', font, size: bodySize })] }),
+                  new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'NIF/CIF: [NIF/CIF]', font, size: bodySize })] }),
+                ],
+              }),
+              new TableCell({
+                width: { size: 4513, type: WidthType.DXA }, margins: { top: 1200, bottom: 80, left: 120, right: 120 }, borders: noBorders,
+                children: [
+                  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 80 }, children: [new TextRun({ text: 'Francisco Manuel Martín Sánchez', font, size: bodySize })] }),
+                  new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'C.I.F. 75776254V', font, size: bodySize })] }),
+                ],
+              }),
+            ],
+          }),
+        ],
+      }),
+
+    ],
+  }],
+});
+
+// ─── GENERAR Y PARCHEAR PIE DE PÁGINA ────────────────────────────────────────
+
+Packer.toBuffer(doc).then(buffer => {
+  fs.writeFileSync(OUTPUT_PATH, buffer);
+  execSync(`python3 /mnt/skills/public/docx/scripts/office/unpack.py ${OUTPUT_PATH} ${UNPACKED}/`);
+
+  const footerXml = `<?xml version="1.0" encoding="utf-8"?>
+<w:ftr xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+  <w:tbl>
+    <w:tblPr>
+      <w:tblW w:w="9026" w:type="dxa"/>
+      <w:tblBorders>
+        <w:top w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+        <w:left w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+        <w:bottom w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+        <w:right w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+        <w:insideH w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+        <w:insideV w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+      </w:tblBorders>
+      <w:tblCellMar>
+        <w:top w:w="80" w:type="dxa"/>
+        <w:left w:w="120" w:type="dxa"/>
+        <w:bottom w:w="80" w:type="dxa"/>
+        <w:right w:w="120" w:type="dxa"/>
+      </w:tblCellMar>
+    </w:tblPr>
+    <w:tblGrid>
+      <w:gridCol w:w="4513"/>
+      <w:gridCol w:w="4513"/>
+    </w:tblGrid>
+    <w:tr>
+      <w:tc>
+        <w:tcPr>
+          <w:tcW w:w="4513" w:type="dxa"/>
+          <w:tcBorders>
+            <w:top w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+            <w:left w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+            <w:bottom w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+            <w:right w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+          </w:tcBorders>
+        </w:tcPr>
+        <w:p>
+          <w:pPr><w:jc w:val="left"/><w:spacing w:after="0" w:before="0"/></w:pPr>
+          <w:r>
+            <w:rPr>
+              <w:rFonts w:ascii="Manrope" w:cs="Manrope" w:eastAsia="Manrope" w:hAnsi="Manrope"/>
+              <w:sz w:val="16"/><w:szCs w:val="16"/>
+            </w:rPr>
+            <w:t>LA OLA BUENA</w:t>
+          </w:r>
+        </w:p>
+      </w:tc>
+      <w:tc>
+        <w:tcPr>
+          <w:tcW w:w="4513" w:type="dxa"/>
+          <w:tcBorders>
+            <w:top w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+            <w:left w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+            <w:bottom w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+            <w:right w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+          </w:tcBorders>
+        </w:tcPr>
+        <w:p>
+          <w:pPr><w:jc w:val="right"/><w:spacing w:after="0" w:before="0"/></w:pPr>
+          <w:r>
+            <w:rPr>
+              <w:rFonts w:ascii="Manrope" w:cs="Manrope" w:eastAsia="Manrope" w:hAnsi="Manrope"/>
+              <w:sz w:val="16"/><w:szCs w:val="16"/>
+            </w:rPr>
+            <w:t>[NOMBRE DE LA EMPRESA]</w:t>
+          </w:r>
+        </w:p>
+      </w:tc>
+    </w:tr>
+  </w:tbl>
+  <w:p><w:pPr><w:spacing w:after="0" w:before="0"/></w:pPr></w:p>
+</w:ftr>`;
+
+  fs.writeFileSync(`${UNPACKED}/word/footer1.xml`, footerXml);
+  execSync(`python3 /mnt/skills/public/docx/scripts/office/pack.py ${UNPACKED}/ ${OUTPUT_PATH} --original ${OUTPUT_PATH} --validate false`);
+  execSync(`rm -rf ${UNPACKED}`);
+
+  console.log('✅ Contrato generado en:', OUTPUT_PATH);
+});

@@ -1,0 +1,29 @@
+{
+  "name": "contratos-lob",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "clean": "powershell -NoProfile -Command \"if (Test-Path .next) { Remove-Item .next -Recurse -Force }\"",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@fontsource/manrope": "^5.2.8",
+    "docx": "^9.5.1",
+    "jszip": "^3.10.1",
+    "next": "^15.5.6",
+    "pdfkit": "^0.17.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "svg-to-pdfkit": "^0.1.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "@types/pdfkit": "^0.17.4",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.5",
+    "typescript": "^5.8.3"
+  }
+}
