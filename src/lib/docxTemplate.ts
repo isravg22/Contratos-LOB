@@ -9,6 +9,7 @@ import {
   ImageRun,
   Packer,
   Paragraph,
+  Tab,
   Table,
   TableCell,
   TableLayoutType,
@@ -300,7 +301,7 @@ function footerLine(companyName: string) {
     tabStops: [{ type: TabStopType.RIGHT, position: contentWidth }],
     children: [
       new TextRun({ text: "LA OLA BUENA", font, size: footerSize, color: "000000" }),
-      new TextRun({ text: "\t", font, size: footerSize }),
+      new Tab(),
       new TextRun({ text: companyName || "", font, size: footerSize, color: "000000" }),
     ],
   });
