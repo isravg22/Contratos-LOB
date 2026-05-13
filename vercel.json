@@ -1,0 +1,17 @@
+{
+  "functions": {
+    "app/api/generar-pdf/route.ts": {
+      "includeFiles": [
+        "CONTRATO_LOB_plantilla.docx",
+        "lob-brand1.svg",
+        "assets/fonts/**"
+      ]
+    },
+    "app/api/generar-contrato/route.ts": {
+      "includeFiles": [
+        "CONTRATO_LOB_plantilla.docx",
+        "public/brand.png"
+      ]
+    }
+  }
+}
