@@ -9,12 +9,10 @@ import {
   ImageRun,
   Packer,
   Paragraph,
-  Tab,
   Table,
   TableCell,
   TableLayoutType,
   TableRow,
-  TabStopType,
   TextRun,
   UnderlineType,
   WidthType,
@@ -296,13 +294,40 @@ function signatureTable(table: Extract<Block, { type: "table" }>) {
 }
 
 function footerLine(companyName: string) {
-  return new Paragraph({
-    spacing: { before: 0, after: 0 },
-    tabStops: [{ type: TabStopType.RIGHT, position: contentWidth }],
-    children: [
-      new TextRun({ text: "LA OLA BUENA", font, size: footerSize, color: "000000" }),
-      new Tab(),
-      new TextRun({ text: companyName || "", font, size: footerSize, color: "000000" }),
+  const half = Math.floor(contentWidth / 2);
+  return new Table({
+    layout: TableLayoutType.FIXED,
+    width: { size: contentWidth, type: WidthType.DXA },
+    columnWidths: [half, contentWidth - half],
+    borders: clearTableBorders(),
+    rows: [
+      new TableRow({
+        children: [
+          new TableCell({
+            width: { size: half, type: WidthType.DXA },
+            borders: clearCellBorders(),
+            margins: { top: 0, bottom: 0, left: 0, right: 0 },
+            children: [
+              new Paragraph({
+                spacing: { before: 0, after: 0 },
+                children: [new TextRun({ text: "LA OLA BUENA", font, size: footerSize, color: "000000" })],
+              }),
+            ],
+          }),
+          new TableCell({
+            width: { size: contentWidth - half, type: WidthType.DXA },
+            borders: clearCellBorders(),
+            margins: { top: 0, bottom: 0, left: 0, right: 0 },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.RIGHT,
+                spacing: { before: 0, after: 0 },
+                children: [new TextRun({ text: companyName || "", font, size: footerSize, color: "000000" })],
+              }),
+            ],
+          }),
+        ],
+      }),
     ],
   });
 }
