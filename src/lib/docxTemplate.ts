@@ -33,7 +33,7 @@ const borderColor = "C8CDD3";
 type Block =
   | { type: "heading"; text: string; level: 1 | 2 | 3 }
   | { type: "paragraph"; text: string }
-  | { type: "list"; items: string[] }
+  | { type: "list"; items: string[]; serviceList: boolean }
   | { type: "table"; rows: string[][]; signature: boolean };
 
 export async function renderContractDocx(data: ContractFormData) {
@@ -71,7 +71,7 @@ export async function renderContractDocx(data: ContractFormData) {
                       new ImageRun({
                         type: "png",
                         data: logo,
-                        transformation: { width: 112, height: 18 },
+                        transformation: { width: 132, height: 22 },
                       }),
                     ],
                   }),
@@ -110,10 +110,11 @@ function parseMarkdownContract(markdown: string): Block[] {
   const blocks: Block[] = [];
   let firstHeading = true;
   let listItems: string[] = [];
+  let inServiceModule = false;
 
   const flushList = () => {
     if (listItems.length) {
-      blocks.push({ type: "list", items: listItems });
+      blocks.push({ type: "list", items: listItems, serviceList: inServiceModule });
       listItems = [];
     }
   };
@@ -149,6 +150,7 @@ function parseMarkdownContract(markdown: string): Block[] {
     if (isBoldLine(line)) {
       const text = line.slice(2, -2);
       const level = firstHeading ? 1 : text.endsWith("Incluye:") ? 3 : 2;
+      inServiceModule = level === 3;
       blocks.push({ type: "heading", text, level });
       firstHeading = false;
       continue;
@@ -164,7 +166,7 @@ function parseMarkdownContract(markdown: string): Block[] {
 function drawBlock(block: Block): Array<Paragraph | Table> {
   if (block.type === "heading") return [heading(block.text, block.level)];
   if (block.type === "paragraph") return [paragraph(block.text)];
-  if (block.type === "list") return block.items.map((item) => bullet(item));
+  if (block.type === "list") return block.items.map((item) => bullet(item, block.serviceList));
   if (block.signature) return [signatureTable(block)];
   return [dataTable(block)];
 }
@@ -177,9 +179,9 @@ function heading(text: string, level: 1 | 2 | 3) {
   return new Paragraph({
     spacing: {
       before: isTitle ? 0 : isSubheading ? 180 : isMajor ? 560 : 420,
-      after: isTitle ? 160 : 100,
+      after: isTitle ? 20 : 100,
     },
-    indent: isSubheading ? { left: 420 } : undefined,
+    indent: undefined,
     children: [
       new TextRun({
         text,
@@ -200,11 +202,11 @@ function paragraph(text: string) {
   });
 }
 
-function bullet(text: string) {
+function bullet(text: string, serviceList: boolean) {
   return new Paragraph({
     alignment: AlignmentType.JUSTIFIED,
     spacing: { after: 100 },
-    indent: { left: 900, hanging: 260 },
+    indent: serviceList ? { left: 900, hanging: 260 } : { left: 900, hanging: 260 },
     children: [
       new TextRun({ text: "- ", font, size: bodySize, color: "000000" }),
       ...inlineRuns(text, bodySize),

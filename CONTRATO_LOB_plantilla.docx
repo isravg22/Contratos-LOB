@@ -34,175 +34,56 @@ Definir las condiciones y características del desarrollo web, creación de cont
 
 **TERCERA.- ACUERDO ECONÓMICO**
 
-Se establece el método de pago por parte de [NOMBRE DE LA EMPRESA] a LA OLA BUENA:
+El valor total de los servicios contratados asciende a [PRECIO TOTAL] + IVA mensual.
 
-El valor de los servicios contratados asciende a la cantidad de **[VALOR DE SERVICIOS]€ + IVA mensual**.
+Se acuerda una cuota mensual de [PRECIO OFERTADO] + IVA, abonada al inicio de cada mes en curso. Dicha oferta tendrá vigencia durante los primeros [Nº MESES] meses del contrato. A la finalización de dicho periodo, ambas partes acordarán de mutuo acuerdo las condiciones económicas aplicables a periodos sucesivos.
 
-Se acuerda entonces **una oferta** consistente en un pago mensual de **[VALOR OFERTA]€ + IVA** al inicio del mes en curso en concepto de mantenimiento del plan.
+Los pagos correspondientes a dominio, alojamiento anual y licencia de Elementor Pro son gastos directos de [NOMBRE COMERCIAL] y no se consideran beneficio de LA OLA BUENA (ver cláusula NOVENA).
 
-La oferta económica indicada tendrá vigencia durante los primeros **[DURACIÓN OFERTA] meses** de contrato. A la finalización de dicho periodo, ambas partes acordarán de mutuo acuerdo las condiciones económicas aplicables a periodos sucesivos.
+El método de pago acordado es transferencia bancaria a los datos facilitados por LA OLA BUENA. El impago de cualquier mensualidad facultará a LA OLA BUENA a suspender la prestación del servicio hasta la regularización.
 
-Los pagos correspondientes a dominio, alojamiento anual y contratación de Elementor Pro. Esto es 15€ + IVA/año, 140€ + IVA/año y 50€ + IVA/año respectivamente. Estos cargos se realizan anualmente y no se consideran beneficios de LA OLA BUENA.
 
-**CUARTA.- CARACTERÍSTICAS DEL PRODUCTO A DESARROLLAR**
-
-Todos los servicios y prestaciones descritos en esta cláusula, incluidos los trabajos de desarrollo web, se prestan en régimen de obra subrogada e integrada en la cuota mensual acordada en la cláusula TERCERA, sin que su ejecución suponga prestación adicional o coste separado para [NOMBRE DE LA EMPRESA], salvo los gastos anuales recogidos en la cláusula NOVENA.
-
-**Desarrollo web. Incluye:**
-
-- Diseño y maquetación de la web corporativa adaptada a la identidad de marca de [NOMBRE DE LA EMPRESA].
-
-- Estructura de páginas, navegación y arquitectura de la información.
-
-- Versión responsive optimizada para móvil, tablet y escritorio.
-
-- Integración de formularios de contacto, llamadas a la acción y enlaces directos a canales de comunicación (WhatsApp, email, teléfono).
-
-- Configuración de hosting, dominio y certificado SSL.
-
-- Instalación y configuración base de WordPress y plantilla profesional con Elementor Pro.
-
-- Pruebas de funcionamiento, compatibilidad y velocidad antes de la publicación.
-
-**Creación de contenidos. Incluye:**
-
-- Redacción de textos para las páginas principales orientados a marca y conversión.
-
-- Estructuración de contenidos en bloques claros y orientados al usuario objetivo.
-
-- Selección y tratamiento de imágenes (optimización de peso, formato y atributos ALT).
-
-- Creación de descripciones específicas para servicios y secciones clave de la web.
-
-- Apoyo en la línea editorial y tono de comunicación.
-
-**SEO on page. Incluye:**
-
-- Perfil de empresa en Google y en Bing.
-
-- Configuración de Google Analytics e inclusión del código en la web.
-
-- Configuración y monitorización de Google Search Console.
-
-- Instalación y configuración del plugin Yoast SEO para WordPress.
-
-- Alta y configuración en SE Ranking (herramienta especializada para SEO).
-
-- Optimización SEO para asistentes de IA.
-
-- Redacción de títulos y meta descripciones orientadas a SEO.
-
-- Revisión de indexación de páginas y optimización de slugs.
-
-- Creación de textos alternativos (atributos ALT) en imágenes y medios.
-
-- Optimización de velocidad y Core Web Vitals.
-
-**Estrategia SEO mensual. Incluye:**
-
-- Análisis de la competencia y de tendencias del sector.
-
-- Elección y tratamiento de palabras clave principales.
-
-- Estrategia de contenidos (plan básico de blog y landings).
-
-- SEO Local: optimización de mapas, citaciones en directorios y SEO geolocalizado.
-
-- Analítica de conversiones en la web (seguimiento de botones y enlaces de contacto como formularios, WhatsApp, llamadas y email).
-
-- Linkbuilding inicial: revisión y generación de enlaces en directorios de calidad.
-
-- Revisión mensual de estrategia SEO e implementación de conclusiones.
-
-- Informes trimestrales de rendimiento y evolución SEO.
-
-**Gestión de reseñas. Incluye:**
-
-- Configuración y optimización del perfil público en Google y Bing para captación de reseñas.
-
-- Monitorización de nuevas reseñas y notificaciones a [NOMBRE DE LA EMPRESA].
-
-- Propuesta de plantillas de respuesta a reseñas positivas y negativas.
-
-- Asesoramiento en la implementación de procesos para solicitar reseñas a clientes reales.
-
-- Inclusión de reseñas o testimonios destacados en la web cuando proceda.
-
-**Mantenimiento y securización. Incluye:**
-
-- Copias de seguridad de archivos automatizadas cada 15 días y almacenamiento en la nube durante dos meses mediante plugin profesional.
-
-- Copias de seguridad de base de datos cada 15 días y almacenamiento en la nube durante dos meses mediante plugin profesional.
-
-- Copia de seguridad diaria de archivos y bases de datos de los últimos 7 días.
-
-- Monitorización de seguridad web.
-
-- Revisión mensual de archivos críticos y base de datos.
-
-- Actualización mensual de plugins.
-
-- Actualización mensual de WordPress.
-
-- Limpieza y optimización periódica de base de datos.
-
-- Reducción y optimización de los plugins utilizados siempre que sea posible.
-
-- Asesoramiento en la selección de plugins nuevos e instalados.
-
-- Optimización de imágenes para mejora de la carga inicial.
-
-- Monitorización del rendimiento web y tests de rendimientos mensuales.
-
-- Subida y modificación de contenido web.
-
-- Comunicación directa prioritaria mediante WhatsApp y correo electrónico.
-
-- Soporte web y resolución de incidencias.
-
-- Informe mensual de las acciones realizadas, resultado de test de rendimiento y mejoras aplicadas.
+**CUARTA.- SERVICIOS CONTRATADOS**
+Todos los servicios descritos en esta cláusula se prestan de forma integrada en la cuota mensual acordada en la cláusula TERCERA, sin coste adicional separado para [NOMBRE COMERCIAL], salvo los gastos anuales recogidos en la cláusula NOVENA.
+Los módulos de servicio contratados son los siguientes:
+[SERVICIOS_CONTRATADOS]
 
 **QUINTA.- TIEMPOS DE DESARROLLO**
 
-El tiempo estimado para el desarrollo es de **[TIEMPO DE DESARROLLO]**. La estrategia se implantará en el primer mes y se irán haciendo revisiones y ajustes en los meses siguientes hasta llegar a los objetivos.
+La estrategia y la configuración inicial de todos los servicios contratados se implantarán durante el primer mes de vigencia del contrato. Los meses siguientes se dedicarán a la revisión, ajuste y optimización continua para alcanzar los objetivos definidos. [TIEMPO DE DESARROLLO ESPECÍFICO SI PROCEDE]
 
 **SEXTA.- PROHIBICIÓN DE CESIÓN A TERCEROS**
 
-Las partes contratantes en ningún caso podrán ceder su posición contractual a terceros sin el consentimiento expreso de la otra parte contratante.
+Las partes contratantes no podrán ceder su posición contractual a terceros sin el consentimiento expreso y por escrito de la otra parte.
 
 **SÉPTIMA.- CONFIDENCIALIDAD**
 
-Ambas partes han de guardar secreto de toda la información a la que puedan llegar a tener acceso de la otra parte durante el presente contrato y con posterioridad al mismo.
+Ambas partes se comprometen a guardar secreto sobre toda la información a la que puedan tener acceso de la otra parte durante la vigencia del presente contrato y con posterioridad al mismo.
 
 **OCTAVA.- PROPIEDAD INTELECTUAL E INDUSTRIAL**
 
-En ningún caso las cláusulas del presente convenio suponen la cesión o transmisión de cualesquiera derechos de propiedad intelectual o industrial titularidad de los Colaboradores.
+Las cláusulas del presente contrato no suponen la cesión o transmisión de cualesquiera derechos de propiedad intelectual o industrial de ninguna de las partes.
 
-De esta forma:
+- El contenido intelectual de [NOMBRE COMERCIAL] (imágenes, textos, marca, logotipos, etc.) será de su exclusiva propiedad.
+- La metodología, desarrollos y tecnologías aplicadas al proyecto pertenecen a LA OLA BUENA, excluyendo aquellas que dispongan de licencia específica de terceros.
 
-- El contenido intelectual de [NOMBRE DE LA EMPRESA] será de su exclusiva propiedad.
-
-- La metodología y tecnologías desarrolladas para el presente proyecto pertenecen a LA OLA BUENA. Se excluye todo aquello que ya disponga de licencia específica y debamos ajustarnos a sus términos.
 
 **NOVENA.- GASTOS**
 
-Cualquier gasto derivado del ejercicio de cualquier actividad destinada a la colaboración objeto del presente contrato, será asumido por [NOMBRE DE LA EMPRESA] en calidad de aportación al proyecto. La estimación inicial de gastos es (pendiente de modificación si fuese necesario):
+Los gastos derivados de licencias y servicios de terceros necesarios para la prestación del servicio serán asumidos directamente por [NOMBRE COMERCIAL]. La estimación inicial es la siguiente (pendiente de modificación si fuera necesario):
 
-| **Concepto** | **Pago anual** |
-| --- | --- |
-| Elementor Pro | **50€ + IVA** |
-| Alojamiento | **140€ + IVA** |
-| Dominio | **15€ + IVA** |
+| **Concepto** | **Pago anual** |**Observaciones**|
+| --- | --- | --- |
+| Elementor Pro | **50€ + IVA** | Licencia anual |
+| Alojamiento | **140€ + IVA** | Renovación anual |
+| Dominio | **15€ + IVA** | Renovación anual |
 
 **DÉCIMA.- LICENCIAS Y SERVICIOS DE TERCEROS**
 
-Las licencias, suscripciones y servicios de terceros necesarios para la prestación de los servicios objeto del presente contrato (dominio, alojamiento web, Elementor Pro, herramientas SEO y demás plugins o servicios de pago) serán contratados por LA OLA BUENA en nombre y por cuenta de [NOMBRE DE LA EMPRESA], quien asume directamente su coste anual conforme a la cláusula NOVENA.
-
-Aunque la gestión técnica y administrativa la realice LA OLA BUENA durante la vigencia del contrato, **la titularidad última de dichas licencias y servicios corresponde a [NOMBRE DE LA EMPRESA]**. En caso de resolución o no renovación del contrato, LA OLA BUENA llevará a cabo las gestiones necesarias para transferir formalmente la titularidad y los accesos a [NOMBRE DE LA EMPRESA] o al proveedor que ésta designe, siempre que los pagos correspondientes a dichos servicios y a las mensualidades del contrato se encuentren al corriente.
-
-La transferencia se realizará en un plazo máximo de 15 días naturales desde la solicitud expresa de [NOMBRE DE LA EMPRESA].
-
+Las licencias, suscripciones y servicios de terceros (dominio, alojamiento, Elementor Pro, herramientas SEO y demás plugins o servicios de pago) serán contratados por LA OLA BUENA en nombre y por cuenta de [NOMBRE COMERCIAL], quien asume su coste conforme a la cláusula NOVENA.
+La titularidad última de dichas licencias y servicios corresponde a [NOMBRE COMERCIAL]. En caso de resolución o no renovación del contrato, LA OLA BUENA llevará a cabo las gestiones necesarias para transferir formalmente la titularidad y los accesos en un plazo máximo de 15 días naturales desde la solicitud expresa.
 LA OLA BUENA no será responsable de los términos, modificaciones unilaterales, interrupciones o subidas de precio que apliquen los proveedores de terceros sobre dichas licencias o servicios.
+
 
 **UNDÉCIMA.- DURACIÓN DEL CONTRATO**
 
@@ -210,69 +91,64 @@ El presente contrato tendrá una duración mínima de **[DURACIÓN DEL CONTRATO]
 
 **DUODÉCIMA.- NOTIFICACIONES**
 
-A efectos de notificaciones, o de emplazamientos judiciales, y en general, toda comunicación o requerimiento que hayan de oír las partes en relación con el presente contrato, se tomará como domicilios los indicados en el inicio del presente documento.
-
-Cualquier cambio de domicilio de una de las partes deberá ser notificado a la otra de forma inmediata, y por un medio que garantice la recepción del mensaje.
+A efectos de notificaciones o emplazamientos, se tomarán como domicilios los indicados al inicio del presente documento. Cualquier cambio de domicilio deberá ser notificado a la otra parte de forma inmediata y por un medio que garantice la recepción del mensaje.
 
 **DECIMOTERCERA.- RESOLUCIÓN**
 
-El presente contrato puede quedar resuelto por las causas en él contenidas y además por siguientes causas:
+El presente contrato puede quedar resuelto por las causas en él contenidas y además por las siguientes:
 
-- Incumplimiento de las obligaciones en él contenidas por cualquiera de las partes sin perjuicio de la posible indemnización por los daños y perjuicios que del incumplimiento pudieran ocasionarse que comprenderá tanto el daño emergente como el lucro cesante.
+- Incumplimiento de las obligaciones por cualquiera de las partes, sin perjuicio de la posible indemnización por daños y perjuicios.
 
 - Por acuerdo expreso entre las partes.
 
-Será posible resolver el contrato antes del periodo mínimo establecido, en cuyo caso [NOMBRE DE LA EMPRESA] tendrá que efectuar un pago único, de importe igual al 70% de la suma de las mensualidades pendientes de pago hasta la finalización del periodo mínimo del contrato, calculadas según la cuota mensual aplicada en el momento de la resolución, y que deberá hacerse efectivo antes de 30 días naturales después de haber solicitado la resolución del contrato.
+En caso de resolución anticipada antes de la finalización del periodo mínimo, [NOMBRE COMERCIAL] deberá abonar a LA OLA BUENA una compensación equivalente al 70% de la suma de las mensualidades pendientes hasta la finalización del periodo mínimo contratado, calculadas según la cuota mensual vigente en el momento de la resolución. Dicho importe deberá hacerse efectivo en un plazo máximo de 30 días naturales desde la solicitud de resolución.
 
 **DECIMOCUARTA.- PROCEDIMIENTO DE SALIDA Y TRANSICIÓN**
 
-A la finalización del contrato, por cualquier causa, LA OLA BUENA llevará a cabo un procedimiento de transición ordenada que incluirá:
+A la finalización del contrato, por cualquier causa, LA OLA BUENA llevará a cabo un procedimiento de transición ordenada que incluirá la entrega a [NOMBRE COMERCIAL] de:
 
-- Entrega a [NOMBRE DE LA EMPRESA] de las credenciales de acceso a la web, panel de administración de WordPress, alojamiento, dominio, cuenta de Elementor Pro y demás herramientas asociadas (Google Analytics, Google Search Console, perfiles de empresa de Google y Bing, SE Ranking y cualquier otra plataforma utilizada durante la prestación del servicio).
+- Todas las credenciales de acceso: web, panel de administración de WordPress, alojamiento, dominio, Elementor Pro, Google Analytics, Google Search Console, perfiles en Google y Bing, SE Ranking y cualquier otra plataforma utilizada.
 
-- Generación y entrega de una copia de seguridad completa y actualizada de archivos y base de datos en formato estándar exportable.
+- Una copia de seguridad completa y actualizada de archivos y base de datos en formato estándar exportable.
 
-- Entrega de un informe final que documente las acciones SEO realizadas, palabras clave trabajadas, estructura de contenidos publicados e histórico de informes mensuales.
+- Un informe final que documente las acciones SEO realizadas, palabras clave trabajadas, estructura de contenidos e histórico de informes mensuales.
 
-- Apoyo razonable en la migración a un nuevo proveedor durante los 15 días naturales posteriores a la finalización del contrato, sin coste adicional. Cualquier soporte que se extienda más allá de dicho plazo o que implique trabajo técnico significativo (migración de servidor, rediseño, reescritura de contenidos, etc.) será presupuestado de forma independiente.
+- Apoyo razonable en la migración a un nuevo proveedor durante los 15 días naturales posteriores a la finalización del contrato, sin coste adicional. Cualquier soporte más allá de dicho plazo o que implique trabajo técnico significativo será presupuestado de forma independiente.
 
-[NOMBRE DE LA EMPRESA] se compromete a tener al corriente todos los pagos pendientes (mensualidades, gastos anuales y, en su caso, la penalización prevista en la cláusula DECIMOTERCERA) antes de la entrega definitiva de credenciales, copias y documentación. En caso de impago, LA OLA BUENA podrá retener las entregas hasta la regularización.
-
-Las obligaciones de confidencialidad recogidas en la cláusula SÉPTIMA y de propiedad intelectual recogidas en la cláusula OCTAVA permanecerán vigentes tras la finalización del contrato.
+[NOMBRE COMERCIAL] se compromete a tener al corriente todos los pagos pendientes antes de la entrega definitiva de credenciales y documentación. En caso de impago, LA OLA BUENA podrá retener las entregas hasta la regularización.
 
 **DECIMOQUINTA.- LIMITACIÓN DE RESPONSABILIDAD**
 
-La responsabilidad total de LA OLA BUENA frente a [NOMBRE DE LA EMPRESA] por cualquier daño o perjuicio derivado del cumplimiento o incumplimiento del presente contrato quedará limitada, de forma acumulada por cualquier reclamación o conjunto de reclamaciones, a un importe máximo equivalente a **tres (3) mensualidades** efectivamente abonadas por [NOMBRE DE LA EMPRESA], calculadas según la cuota mensual vigente en el momento del hecho que origine la responsabilidad.
+La responsabilidad total de LA OLA BUENA frente a [NOMBRE COMERCIAL] quedará limitada a un importe máximo equivalente a tres (3) mensualidades efectivamente abonadas, calculadas según la cuota vigente en el momento del hecho que origine la responsabilidad.
 
 En ningún caso LA OLA BUENA responderá por:
 
-- Daños indirectos, consecuenciales, lucro cesante, pérdida de beneficios, pérdida de oportunidad comercial o pérdida de reputación.
 
-- Pérdidas de datos cuando se haya cumplido con la política de copias de seguridad descrita en la cláusula CUARTA.
+- Daños indirectos, consecuenciales, lucro cesante, pérdida de beneficios, oportunidad comercial o reputación.
 
-- Caídas, fallos, cambios de algoritmo, pérdidas de posicionamiento orgánico, sanciones, suspensiones de cuenta o cualquier otra incidencia provocada por proveedores de terceros (Google, Bing, alojamiento, plugins, Elementor, herramientas SEO, etc.) o por decisiones, instrucciones o actuaciones de la propia [NOMBRE DE LA EMPRESA].
+- Pérdidas de datos cuando se haya cumplido la política de copias de seguridad descrita en la cláusula CUARTA.
 
-- Pérdidas derivadas de retrasos, errores u omisiones imputables a la falta de entrega de contenidos, accesos, materiales o información requeridos a [NOMBRE DE LA EMPRESA].
+- Caídas, fallos, cambios de algoritmo, pérdidas de posicionamiento, sanciones o suspensiones provocadas por proveedores de terceros o por decisiones del propio [NOMBRE COMERCIAL].
 
-- Daños derivados de un uso indebido de la plataforma por personas ajenas a LA OLA BUENA o por intervenciones técnicas realizadas en la web sin su conocimiento o autorización.
+- Pérdidas derivadas de retrasos u omisiones imputables a la falta de entrega de contenidos, accesos o materiales requeridos al CLIENTE.
 
-La presente limitación no será de aplicación en los supuestos en que la legislación aplicable imperativamente impida su exclusión, en particular en casos de dolo o culpa grave de LA OLA BUENA.
+- Daños derivados de un uso indebido de la plataforma por personas ajenas a LA OLA BUENA o por intervenciones técnicas realizadas sin su conocimiento o autorización.
+
+La presente limitación no será de aplicación en casos de dolo o culpa grave de LA OLA BUENA, en los supuestos en que la legislación aplicable imperativamente impida su exclusión.
+
 
 **DECIMOSEXTA.- LEGISLACIÓN APLICABLE Y FUERO**
 
-El presente contrato se rige por lo dispuesto en él y de forma supletoria se aplicarán las normas generales de las obligaciones y contratos recogidas en Código Civil y otras leyes que fueren aplicables.
-
-Las partes se someten a la jurisdicción de los tribunales competentes territorialmente de Cádiz, para la resolución de cualquier conflicto que pueda surgir entre ellas, con renuncia expresa a cualquier otro tribunal o fuero que pudiera corresponderles.
+El presente contrato se rige por las normas generales de las obligaciones y contratos recogidas en el Código Civil español y demás leyes aplicables. Las partes se someten a la jurisdicción de los tribunales competentes territorialmente de Cádiz, con renuncia expresa a cualquier otro fuero que pudiera corresponderles.
 
 **DECIMOSÉPTIMA.- GENERALIDADES**
 
-El presente contrato anula y reemplaza cualquier contrato o acuerdo anterior entre las partes con el mismo objeto y sólo podrá ser modificado por un nuevo acuerdo firmado por ambas partes.
+El presente contrato anula y reemplaza cualquier acuerdo anterior entre las partes con el mismo objeto, y solo podrá ser modificado por un nuevo acuerdo firmado por ambas.
+Si alguna cláusula fuera declarada nula o inaplicable, se considerará excluida del contrato sin afectar a la validez del resto. Las partes harán cuanto esté a su alcance para encontrar una solución equivalente válida que refleje sus intenciones.
 
-Si alguna de las cláusulas del presente contrato fuere declarada nula o inaplicable, dicha cláusula se considerará excluida del contrato, sin que implique la nulidad del mismo. En este caso las partes harán cuanto esté a su alcance para encontrar una solución equivalente que sea válida y que refleje debidamente sus intenciones.
 
-Los encabezamientos de las distintas cláusulas lo son sólo a efectos informativos, y no afectarán, calificarán o ampliarán la interpretación de este Contrato.
+Y de conformidad con todo lo expuesto, ambas partes firman el presente contrato por duplicado, en la fecha y lugar indicados al inicio del mismo.
 
-Y de conformidad con lo expuesto en el presente contrato, ambas partes firman el presente contrato de colaboración extendido por duplicado, en fecha y lugar indicados al inicio del mismo.
 
 | **Por [NOMBRE DE LA EMPRESA]** | **Por LA OLA BUENA** |
 | --- | --- |

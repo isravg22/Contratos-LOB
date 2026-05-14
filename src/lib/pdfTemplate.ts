@@ -20,7 +20,7 @@ const FONT_BOLD = "Manrope-Bold";
 type Block =
   | { type: "heading"; text: string; level: 1 | 2 | 3 }
   | { type: "paragraph"; text: string }
-  | { type: "list"; items: string[] }
+  | { type: "list"; items: string[]; serviceList: boolean }
   | { type: "table"; rows: string[][]; signature: boolean };
 
 export async function renderContractPdf(data: ContractFormData) {
@@ -82,10 +82,11 @@ function parseMarkdown(markdown: string): Block[] {
   const blocks: Block[] = [];
   let firstHeading = true;
   let listItems: string[] = [];
+  let inServiceModule = false;
 
   const flushList = () => {
     if (listItems.length) {
-      blocks.push({ type: "list", items: listItems });
+      blocks.push({ type: "list", items: listItems, serviceList: inServiceModule });
       listItems = [];
     }
   };
@@ -120,6 +121,7 @@ function parseMarkdown(markdown: string): Block[] {
     if (isBoldLine(line)) {
       const text = line.slice(2, -2);
       const level = firstHeading ? 1 : text.endsWith("Incluye:") ? 3 : 2;
+      inServiceModule = level === 3;
       blocks.push({ type: "heading", text, level });
       firstHeading = false;
       continue;
@@ -138,7 +140,7 @@ function drawBlock(doc: PDFKit.PDFDocument, block: Block) {
   } else if (block.type === "paragraph") {
     drawParagraph(doc, block.text);
   } else if (block.type === "list") {
-    block.items.forEach((item) => drawBullet(doc, item));
+    block.items.forEach((item) => drawBullet(doc, item, block.serviceList));
     doc.y += 2;
   } else {
     drawTable(doc, block);
@@ -150,7 +152,7 @@ function drawHeading(doc: PDFKit.PDFDocument, block: Extract<Block, { type: "hea
   const isSubheading = block.level === 3;
   const topGap = isTitle ? 0 : isSubheading ? 8 : isMajorHeading(block.text) ? 24 : 17;
   const fontSize = isTitle ? 12 : isMajorHeading(block.text) ? 12 : isSubheading ? 10 : 10;
-  const left = isSubheading ? 36 : 0;
+  const left = 0;
 
   ensureSpace(doc, topGap + 20);
   doc.y += topGap;
@@ -162,7 +164,7 @@ function drawHeading(doc: PDFKit.PDFDocument, block: Extract<Block, { type: "hea
       width: CONTENT_WIDTH - left,
       lineGap: 0,
     });
-  doc.y += isTitle ? 8 : 3;
+  doc.y += isTitle ? 1 : 3;
 }
 
 function drawParagraph(doc: PDFKit.PDFDocument, text: string) {
@@ -179,16 +181,19 @@ function drawParagraph(doc: PDFKit.PDFDocument, text: string) {
   doc.y += 5;
 }
 
-function drawBullet(doc: PDFKit.PDFDocument, text: string) {
+function drawBullet(doc: PDFKit.PDFDocument, text: string, serviceList: boolean) {
   ensureSpace(doc, 26);
   const y = doc.y;
-  doc.font(FONT_REGULAR).fontSize(10).text("-", PAGE.marginX + 42, y, { width: 8 });
+  const markerLeft = serviceList ? 42 : 42;
+  const textLeft = serviceList ? 60 : 60;
+
+  doc.font(FONT_REGULAR).fontSize(10).text("-", PAGE.marginX + markerLeft, y, { width: 8 });
   doc
     .font(FONT_REGULAR)
     .fontSize(10)
     .fillColor("#1f2428")
-    .text(stripMarkdown(text), PAGE.marginX + 60, y, {
-      width: CONTENT_WIDTH - 60,
+    .text(stripMarkdown(text), PAGE.marginX + textLeft, y, {
+      width: CONTENT_WIDTH - textLeft,
       align: "justify",
       lineGap: 0.1,
     });
@@ -341,9 +346,9 @@ function drawCenteredSignatureLines(
 function drawHeader(doc: PDFKit.PDFDocument, logoSvg?: string) {
   if (!logoSvg) return;
 
-  SVGtoPDF(doc, logoSvg, doc.page.width - PAGE.marginX - 112, 30, {
-    width: 112,
-    height: 14,
+  SVGtoPDF(doc, logoSvg, doc.page.width - PAGE.marginX - 132, 28, {
+    width: 132,
+    height: 17,
     preserveAspectRatio: "xMaxYMid meet",
   });
 }
