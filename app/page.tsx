@@ -22,6 +22,7 @@ type OutputFormat = "pdf" | "docx";
 
 const TEXT_FIELD_NAMES = [
   "companyName",
+  "tagName",
   "legalRepresentative",
   "taxId",
   "fiscalAddress",
@@ -151,6 +152,7 @@ export default function Home() {
               Rellena los datos variables y genera el documento Word manteniendo
               la plantilla profesional que ya tienes preparada en PDF.
             </p>
+            <button onClick={() => window.open("https://drive.google.com/drive/u/6/folders/1ouG6hZyxthupowHlZtQvIw7sYdrmEVNf", "_blank")}  style={{marginTop:'5%'}}>IR AL DRIVE</button>
           </div>
 
           <div className="summary">

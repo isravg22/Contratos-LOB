@@ -1,5 +1,6 @@
 export type ContractFormData = {
   companyName: string;
+  tagName: string;
   legalRepresentative: string;
   taxId: string;
   fiscalAddress: string;
@@ -205,6 +206,7 @@ export const serviceModules: ReadonlyArray<{ id: ServiceId; label: string; markd
 
 export const defaultContractData: ContractFormData = {
   companyName: "",
+  tagName: "",
   legalRepresentative: "",
   taxId: "",
   fiscalAddress: "",
@@ -223,6 +225,7 @@ export const fieldGroups = [
     title: "Cliente",
     fields: [
       { name: "companyName", label: "Nombre de la empresa", placeholder: "Ej. Bakana Studio" },
+      { name: "tagName", label:"Nombre en el documento", placeholder:"Ej. Bakana" },
       { name: "legalRepresentative", label: "Representante legal", placeholder: "Nombre y apellidos" },
       { name: "taxId", label: "NIF/CIF", placeholder: "B12345678" },
       { name: "fiscalAddress", label: "Domicilio fiscal", placeholder: "Calle, numero, ciudad y CP" },
@@ -243,6 +246,7 @@ export const fieldGroups = [
 
 export function buildReplacements(data: ContractFormData) {
   const company = clean(data.companyName, "[NOMBRE DE LA EMPRESA]");
+  const tagName = clean(data.tagName, "[TAG NAME]");
   const representative = clean(data.legalRepresentative, "[NOMBRE REPRESENTANTE LEGAL]");
   const taxId = clean(data.taxId, "[NIF/CIF]");
   const instagramPosts = clean(
@@ -274,6 +278,7 @@ export function buildReplacements(data: ContractFormData) {
     "[NOMBRE REPRESENTANTE LEGAL]": representative,
     "[NOMBRE DE LA EMPRESA]": company,
     "[NOMBRE COMERCIAL]": company,
+    "[TAG NAME]": tagName,
     "[NIF/CIF]": taxId,
     "[FECHA DE FIRMA]": clean(data.signatureDate, "[FECHA DE FIRMA]"),
     "[PRECIO TOTAL]": clean(data.servicesValue, "[PRECIO TOTAL]"),
