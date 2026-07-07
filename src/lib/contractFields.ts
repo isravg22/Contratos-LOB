@@ -227,7 +227,7 @@ export const fieldGroups = [
       { name: "companyName", label: "Nombre de la empresa", placeholder: "Ej. Bakana Studio" },
       { name: "tagName", label:"Nombre en el documento", placeholder:"Ej. Bakana" },
       { name: "legalRepresentative", label: "Representante legal", placeholder: "Nombre y apellidos" },
-      { name: "taxId", label: "NIF/CIF", placeholder: "B12345678" },
+      { name: "taxId", label: "NIF", placeholder: "B12345678" },
       { name: "fiscalAddress", label: "Domicilio fiscal", placeholder: "Calle, numero, ciudad y CP" },
     ],
   },
@@ -248,7 +248,7 @@ export function buildReplacements(data: ContractFormData) {
   const company = clean(data.companyName, "[NOMBRE DE LA EMPRESA]");
   const tagName = clean(data.tagName, "[TAG NAME]");
   const representative = clean(data.legalRepresentative, "[NOMBRE REPRESENTANTE LEGAL]");
-  const taxId = clean(data.taxId, "[NIF/CIF]");
+  const taxId = clean(data.taxId, "[NIF]");
   const instagramPosts = clean(
     data.instagramPosts,
     "No se han acordado número mínimo"
@@ -272,14 +272,14 @@ export function buildReplacements(data: ContractFormData) {
   return {
     // Nested placeholders — must come before their inner keys
     "[NOMBRE REPRESENTANTE LEGAL DE [NOMBRE DE LA EMPRESA]]": representative,
-    "[NIF/CIF [NOMBRE DE LA EMPRESA]]": taxId,
+    "[NIF [NOMBRE DE LA EMPRESA]]": taxId,
     "[DOMICILIO FISCAL [NOMBRE DE LA EMPRESA]]": clean(data.fiscalAddress, "[DOMICILIO FISCAL]"),
     // Simple placeholders
     "[NOMBRE REPRESENTANTE LEGAL]": representative,
     "[NOMBRE DE LA EMPRESA]": company,
     "[NOMBRE COMERCIAL]": company,
     "[TAG NAME]": tagName,
-    "[NIF/CIF]": taxId,
+    "[NIF]": taxId,
     "[FECHA DE FIRMA]": clean(data.signatureDate, "[FECHA DE FIRMA]"),
     "[PRECIO TOTAL]": clean(data.servicesValue, "[PRECIO TOTAL]"),
     "[PRECIO OFERTADO]": clean(data.offerValue, "[PRECIO OFERTADO]"),

@@ -83,6 +83,7 @@ function parseMarkdown(markdown: string): Block[] {
   let firstHeading = true;
   let listItems: string[] = [];
   let inServiceModule = false;
+  let hasSignatureTable = false;
 
   const flushList = () => {
     if (listItems.length) {
@@ -107,7 +108,10 @@ function parseMarkdown(markdown: string): Block[] {
       }
       index -= 1;
       const table = markdownTable(tableLines);
-      if (table) blocks.push(table);
+      if (table && (!table.signature || !hasSignatureTable)) {
+        blocks.push(table);
+        if (table.signature) hasSignatureTable = true;
+      }
       continue;
     }
 
@@ -279,8 +283,9 @@ function drawTable(doc: PDFKit.PDFDocument, table: Extract<Block, { type: "table
 }
 
 function drawSignatureBlock(doc: PDFKit.PDFDocument, table: Extract<Block, { type: "table" }>) {
-  const header = table.rows[0] || [];
-  const detail = table.rows[1] || [];
+  const rows = olaBuenaFirst(table.rows);
+  const header = rows[0] || [];
+  const detail = rows[1] || [];
   const colWidth = CONTENT_WIDTH / 2;
 
   ensureSpace(doc, 220);
@@ -311,7 +316,7 @@ function drawSignatureBlock(doc: PDFKit.PDFDocument, table: Extract<Block, { typ
 
 function splitSignatureDetail(value: string) {
   const cleaned = stripMarkdown(value).replace(/_{4,}/g, "").replace(/\s+/g, " ").trim();
-  const nifIndex = cleaned.search(/\bNIF\/CIF:/i);
+  const nifIndex = cleaned.search(/\bNIF\:/i);
   const cifIndex = cleaned.search(/\bC\.?I\.?F\.?:?/i);
   const splitIndex = nifIndex >= 0 ? nifIndex : cifIndex;
 
@@ -356,7 +361,7 @@ function drawHeader(doc: PDFKit.PDFDocument, logoSvg?: string) {
 function drawFooters(doc: PDFKit.PDFDocument, companyName: string) {
   const range = doc.bufferedPageRange();
   const pageCount = range.count;
-  for (let index = 0; index < pageCount; index += 1) {
+  for (let index = 0; index < pageCount - 1; index += 1) {
     doc.switchToPage(index);
     const originalY = doc.y;
     const originalBottomMargin = doc.page.margins.bottom;
@@ -381,6 +386,15 @@ function drawFooters(doc: PDFKit.PDFDocument, companyName: string) {
     doc.page.margins.bottom = originalBottomMargin;
     doc.y = originalY;
   }
+}
+
+function olaBuenaFirst(rows: string[][]) {
+  const header = rows[0] || [];
+  if (header[1]?.includes("LA OLA BUENA") && !header[0]?.includes("LA OLA BUENA")) {
+    return rows.map((row) => [row[1] || "", row[0] || "", ...row.slice(2)]);
+  }
+
+  return rows;
 }
 
 function ensureSpace(doc: PDFKit.PDFDocument, needed: number) {

@@ -266,7 +266,7 @@ export default function Home() {
             <p>
               De una parte,{" "}
               <b>{form.legalRepresentative || "[NOMBRE REPRESENTANTE LEGAL]"}</b>{" "}
-              con NIF <b>{form.taxId || "[NIF/CIF]"}</b>, y domicilio en{" "}
+              con NIF <b>{form.taxId || "[NIF]"}</b>, y domicilio en{" "}
               <b>{form.fiscalAddress || "[DOMICILIO FISCAL]"}</b>.
             </p>
             <p>

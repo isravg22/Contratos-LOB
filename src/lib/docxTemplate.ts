@@ -9,6 +9,7 @@ import {
   ImageRun,
   Packer,
   Paragraph,
+  SectionType,
   Table,
   TableCell,
   TableLayoutType,
@@ -42,6 +43,20 @@ export async function renderContractDocx(data: ContractFormData) {
   const markdown = applyReplacements(template, data);
   const blocks = parseMarkdownContract(markdown);
   const logo = await readLogo();
+  const signatureIndex = blocks.findIndex(
+    (block) => block.type === "table" && block.signature
+  );
+  const finalClausesIndex = blocks.findIndex(
+    (block) => block.type === "heading" && block.text.startsWith("DECIMOSEXTA.-")
+  );
+  const finalSectionIndex = finalClausesIndex >= 0 ? finalClausesIndex : signatureIndex;
+  const bodyBlocks = finalSectionIndex >= 0 ? blocks.slice(0, finalSectionIndex) : blocks;
+  const finalBlocks = finalSectionIndex >= 0 ? blocks.slice(finalSectionIndex) : [];
+
+  const page = {
+    size: { width: pageWidth, height: pageHeight },
+    margin: { top: margin, right: margin, bottom: margin, left: margin },
+  };
 
   const doc = new Document({
     styles: {
@@ -54,38 +69,27 @@ export async function renderContractDocx(data: ContractFormData) {
     },
     sections: [
       {
-        properties: {
-          page: {
-            size: { width: pageWidth, height: pageHeight },
-            margin: { top: margin, right: margin, bottom: margin, left: margin },
-          },
-        },
-        headers: logo
-          ? {
-              default: new Header({
-                children: [
-                  new Paragraph({
-                    alignment: AlignmentType.RIGHT,
-                    spacing: { after: 80 },
-                    children: [
-                      new ImageRun({
-                        type: "png",
-                        data: logo,
-                        transformation: { width: 132, height: 22 },
-                      }),
-                    ],
-                  }),
-                ],
-              }),
-            }
-          : undefined,
+        properties: { page },
+        headers: contractHeader(logo),
         footers: {
           default: new Footer({
             children: [footerLine(data.companyName)],
           }),
         },
-        children: blocks.flatMap((block) => drawBlock(block)),
+        children: bodyBlocks.flatMap((block) => drawBlock(block)),
       },
+      ...(finalBlocks.length
+        ? [
+            {
+              properties: { page, type: SectionType.NEXT_PAGE },
+              headers: contractHeader(logo),
+              footers: {
+                default: new Footer({ children: [new Paragraph({})] }),
+              },
+              children: finalBlocks.flatMap((block) => drawBlock(block)),
+            },
+          ]
+        : []),
     ],
   });
 
@@ -111,6 +115,7 @@ function parseMarkdownContract(markdown: string): Block[] {
   let firstHeading = true;
   let listItems: string[] = [];
   let inServiceModule = false;
+  let hasSignatureTable = false;
 
   const flushList = () => {
     if (listItems.length) {
@@ -136,7 +141,10 @@ function parseMarkdownContract(markdown: string): Block[] {
       }
       index -= 1;
       const table = markdownTable(tableLines);
-      if (table) blocks.push(table);
+      if (table && (!table.signature || !hasSignatureTable)) {
+        blocks.push(table);
+        if (table.signature) hasSignatureTable = true;
+      }
       continue;
     }
 
@@ -252,8 +260,9 @@ function dataTable(table: Extract<Block, { type: "table" }>) {
 
 function signatureTable(table: Extract<Block, { type: "table" }>) {
   const colWidth = Math.floor(contentWidth / 2);
-  const header = table.rows[0] || [];
-  const detail = table.rows[1] || [];
+  const rows = olaBuenaFirst(table.rows);
+  const header = rows[0] || [];
+  const detail = rows[1] || [];
 
   return new Table({
     layout: TableLayoutType.FIXED,
@@ -293,6 +302,37 @@ function signatureTable(table: Extract<Block, { type: "table" }>) {
       }),
     ],
   });
+}
+
+function contractHeader(logo?: Buffer) {
+  if (!logo) return undefined;
+
+  return {
+    default: new Header({
+      children: [
+        new Paragraph({
+          alignment: AlignmentType.RIGHT,
+          spacing: { after: 80 },
+          children: [
+            new ImageRun({
+              type: "png",
+              data: logo,
+              transformation: { width: 132, height: 22 },
+            }),
+          ],
+        }),
+      ],
+    }),
+  };
+}
+
+function olaBuenaFirst(rows: string[][]) {
+  const header = rows[0] || [];
+  if (header[1]?.includes("LA OLA BUENA") && !header[0]?.includes("LA OLA BUENA")) {
+    return rows.map((row) => [row[1] || "", row[0] || "", ...row.slice(2)]);
+  }
+
+  return rows;
 }
 
 function footerLine(companyName: string) {
@@ -385,7 +425,7 @@ function inlineRuns(text: string, size: number, forceBold = false) {
 
 function signatureLines(value: string) {
   const cleaned = stripMarkdown(value).replace(/_{4,}/g, "").replace(/\s+/g, " ").trim();
-  const nifIndex = cleaned.search(/\bNIF\/CIF:/i);
+  const nifIndex = cleaned.search(/\bNIF\:/i);
   const cifIndex = cleaned.search(/\bC\.?I\.?F\.?:?/i);
   const splitIndex = nifIndex >= 0 ? nifIndex : cifIndex;
 
