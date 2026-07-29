@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { auth, isAllowedEmail } from "@/auth";
 
 export const runtime = "nodejs";
 
@@ -12,6 +13,12 @@ type UploadPayload = {
 };
 
 export async function POST(request: Request) {
+  const session = await auth();
+
+  if (!isAllowedEmail(session?.user?.email)) {
+    return NextResponse.json({ error: "No autorizado." }, { status: 401 });
+  }
+
   try {
     const payload = (await request.json()) as UploadPayload;
 

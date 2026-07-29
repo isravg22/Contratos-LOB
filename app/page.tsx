@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { FormEvent, useMemo, useState } from "react";
+import { signOut } from "next-auth/react";
 import {
   ContractFormData,
   defaultContractData,
@@ -145,6 +146,13 @@ export default function Home() {
           <div className="brandMark">
             <Image src="/brand.png" alt="La Ola Buena" width={220} height={70} priority />
           </div>
+          <button
+            type="button"
+            className="signOutButton"
+            onClick={() => signOut({ callbackUrl: "/login" })}
+          >
+            Cerrar sesión
+          </button>
           <div>
             <p className="eyebrow">Generador de contratos</p>
             <h1>La Ola Buena</h1>

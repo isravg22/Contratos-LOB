@@ -1,10 +1,17 @@
 import { NextResponse } from "next/server";
 import { ContractFormData, defaultContractData } from "@/src/lib/contractFields";
 import { pdfFileName, renderContractPdf } from "@/src/lib/pdfTemplate";
+import { auth, isAllowedEmail } from "@/auth";
 
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
+  const session = await auth();
+
+  if (!isAllowedEmail(session?.user?.email)) {
+    return NextResponse.json({ error: "No autorizado." }, { status: 401 });
+  }
+
   try {
     const payload = (await request.json()) as Partial<ContractFormData>;
     const data: ContractFormData = {
