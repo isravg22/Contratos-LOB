@@ -16,7 +16,7 @@
     "@fontsource/manrope": "^5.2.8",
     "docx": "^9.5.1",
     "jszip": "^3.10.1",
-    "next": "^15.5.6",
+    "next": "^16.3.3",
     "next-auth": "^5.0.0-beta.32",
     "pdfkit": "^0.17.2",
     "react": "^19.1.0",
